@@ -69,7 +69,6 @@ class Base {
     this.createScene();
     this.createPerspectiveCamera();
     this.createRenderer();
-    this.createMesh({});
     this.createLight();
     this.createOrbitControls();
     this.addListeners();
@@ -139,7 +138,7 @@ class Base {
     this.resizeRendererToDisplaySize();
     this.container?.appendChild(renderer.domElement);
     this.renderer = renderer;
-    this.renderer.setClearColor(0x000000, 0);
+    this.renderer.setClearColor(0xffffff, 0);
   }
   // 允许投影
   enableShadow() {

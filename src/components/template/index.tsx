@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import { Fire } from "../../lib/fire";
+import { Template } from "../../lib/template";
 
 
 interface Props {}
 
-const FireExample: React.FC<Props> = () => {
+const TemplateExample: React.FC<Props> = () => {
   const ref = useRef(null);
   useEffect(() => {
     if (!ref.current) return;
     const start = () => {
-      const fire = new Fire(ref.current, false);
+      const fire = new Template(ref.current, false);
       fire.init();
     };
     start();
@@ -23,4 +23,4 @@ const FireExample: React.FC<Props> = () => {
   );
 };
 
-export default FireExample;
+export default TemplateExample;
