@@ -5,8 +5,8 @@ import rayMarchingFireVertexShader from '../modules/rayMarchingFireVertexShader.
 
 
 export class Fire extends Base {
-    params:Record<string,string|number>;
-    colorParams:Record<string,string>;
+    params: Record<string, string | number>;
+    colorParams: Record<string, string>;
     clock!: THREE.Clock;
     templateMaterial!: THREE.ShaderMaterial;
     constructor(sel: string, debug: boolean) {
@@ -21,7 +21,7 @@ export class Fire extends Base {
             color2: "#ff5718",
         };
     }
-    init(){
+    init() {
         super.init();
         this.createTemplateMaterial();
         this.createPlane();
@@ -35,22 +35,22 @@ export class Fire extends Base {
             uniforms: {
                 uTime: {
                     value: 0,
-                  },
-                  uMouse: {
+                },
+                uMouse: {
                     value: new THREE.Vector2(0, 0),
-                  },
-                  uResolution: {
+                },
+                uResolution: {
                     value: new THREE.Vector2(window.innerWidth, window.innerHeight),
-                  },
-                  uVelocity: {
+                },
+                uVelocity: {
                     value: 3,
-                  },
-                  uColor1: {
+                },
+                uColor1: {
                     value: new THREE.Color(this.colorParams.color1),
-                  },
-                  uColor2: {
+                },
+                uColor2: {
                     value: new THREE.Color(this.colorParams.color2),
-                  },
+                },
             },
         });
         this.templateMaterial = templateMaterial;
