@@ -67,7 +67,7 @@ export class RayMarching extends Base {
                     value: texture
                 },
                 uProgress: {
-                    value: 1
+                    value: 0
                 },
                 uVelocityBox: {
                     value: 0.25
