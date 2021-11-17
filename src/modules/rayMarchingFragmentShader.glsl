@@ -6,8 +6,23 @@ uniform float uProgress;
 uniform float uAngle;
 uniform float uDistance;
 uniform float uVelocitySphere;
+uniform sampler2D uTexture;
 
 const float PI=3.14159265359;
+
+float smin(float a,float b,float k)
+{
+    float h=clamp(.5+.5*(b-a)/k,0.,1.);
+    return mix(b,a,h)-k*h*(1.-h);
+}
+
+float sdBox(vec3 p, vec3 b) {
+    vec3 q = abs(p) - b;
+    return length(max(q, 0.)) + min(max(q.x, max(q.y, q.z)), 0.);
+}
+float sdSphere(vec3 p, float r) {
+    return length(p) -r;
+}
 
 float movingSphere(vec3 p,float shape){
     float rad=uAngle*PI;
@@ -17,10 +32,15 @@ float movingSphere(vec3 p,float shape){
     return smin(shape,gotoCenter,.3);
 }
 
-float smin(float a,float b,float k)
+vec2 matcap(vec3 eye,vec3 normal){
+    vec3 reflected=reflect(eye,normal);
+    float m=2.8284271247461903*sqrt(reflected.z+1.);
+    return reflected.xy/m+.5;
+}
+
+float fresnel(float bias,float scale,float power,vec3 I,vec3 N)
 {
-    float h=clamp(.5+.5*(b-a)/k,0.,1.);
-    return mix(b,a,h)-k*h*(1.-h);
+    return bias+scale*pow(1.+dot(I,N),power);
 }
 
 vec2 centerUv(vec2 uv){
@@ -36,13 +56,7 @@ vec3 background(vec2 uv) {
     return bg;
 }
 
-float sdBox(vec3 p, vec3 b) {
-    vec3 q = abs(p) - b;
-    return length(max(q, 0.)) + min(max(q.x, max(q.y, q.z)), 0.);
-}
-float sdSphere(vec3 p, float r) {
-    return length(p) -r;
-}
+
 
 mat4 rotationMatrix(vec3 axis,float angle){
     axis=normalize(axis);
@@ -67,6 +81,7 @@ float sdf(vec3 p){
     float sphere=sdSphere(p,.3);
     float sBox=smin(box,sphere,.3);
     float mixedBox=mix(sBox,box,uProgress);
+    mixedBox=movingSphere(p,mixedBox);
     return mixedBox;
 }
 
@@ -111,7 +126,10 @@ void main() {
     if(depth < end) {
         vec3 pos=eye+depth*ray;
         vec3 normal=calcNormal(pos);
-        color=normal;
+        vec2 matcapUv=matcap(ray,normal);
+        color=texture2D(uTexture,matcapUv).rgb;
+        float F=fresnel(0.,.4,3.2,ray,normal);
+        color=mix(color,bg,F);
     }
 
     gl_FragColor = vec4(color, 1.);
