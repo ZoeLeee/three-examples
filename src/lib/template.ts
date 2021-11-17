@@ -90,4 +90,4 @@ export class Template extends Base {
             this.templateMaterial.uniforms.uMouse.value = mousePos;
         }
     }
-}
+} 

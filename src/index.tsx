@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import FireExample from "./components/fire";
+import RayMarchingExample from "./components/rayMarching";
 import TemplateExample from "./components/template";
 import './index.css';
 
@@ -12,6 +13,7 @@ const App: React.FC<Props> = () => {
   }>
     <TemplateExample />
     <FireExample />
+    <RayMarchingExample />
   </div>;
 };
 
